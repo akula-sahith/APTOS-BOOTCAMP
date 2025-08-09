@@ -3,13 +3,12 @@ module MyModule::SportsOracle {
     use aptos_framework::timestamp;
     use std::string::{Self, String};
 
-    /// Error codes
     const E_NOT_ORACLE: u64 = 1;
     const E_MATCH_NOT_FOUND: u64 = 2;
     const E_MATCH_ALREADY_EXISTS: u64 = 3;
     const E_MATCH_NOT_FINALIZED: u64 = 4;
 
-    /// Struct representing a sports match result
+    
     struct MatchResult has store, key {
         match_id: String,          // Unique identifier for the match
         home_team: String,         // Home team name
@@ -20,12 +19,12 @@ module MyModule::SportsOracle {
         timestamp: u64,           // When the result was recorded
     }
 
-    /// Oracle authority structure
+
     struct OracleAuthority has key {
         oracle_address: address,   // Authorized oracle address
     }
 
-    /// Function to initialize the oracle with authorized address
+   
     public fun initialize_oracle(admin: &signer, oracle_address: address) {
         let oracle_auth = OracleAuthority {
             oracle_address,
@@ -33,7 +32,6 @@ module MyModule::SportsOracle {
         move_to(admin, oracle_auth);
     }
 
-    /// Function to submit sports match results (only callable by oracle)
     public fun submit_result(
         oracle: &signer,
         admin_address: address,
@@ -43,11 +41,11 @@ module MyModule::SportsOracle {
         home_score: u64,
         away_score: u64
     ) acquires OracleAuthority {
-        // Verify oracle authority
+        
         let oracle_auth = borrow_global<OracleAuthority>(admin_address);
         assert!(signer::address_of(oracle) == oracle_auth.oracle_address, E_NOT_ORACLE);
 
-        // Create match result
+      
         let match_result = MatchResult {
             match_id,
             home_team,
@@ -58,7 +56,7 @@ module MyModule::SportsOracle {
             timestamp: timestamp::now_seconds(),
         };
 
-        // Store the result
+        
         move_to(oracle, match_result);
     }
 }
