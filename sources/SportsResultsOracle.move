@@ -8,23 +8,20 @@ module MyModule::SportsOracle {
     const E_MATCH_ALREADY_EXISTS: u64 = 3;
     const E_MATCH_NOT_FINALIZED: u64 = 4;
 
-    
     struct MatchResult has store, key {
-        match_id: String,          // Unique identifier for the match
-        home_team: String,         // Home team name
-        away_team: String,         // Away team name
-        home_score: u64,          // Home team final score
-        away_score: u64,          // Away team final score
-        is_finalized: bool,       // Whether the result is final
-        timestamp: u64,           // When the result was recorded
+        match_id: String,
+        home_team: String,
+        away_team: String,
+        home_score: u64,
+        away_score: u64,
+        is_finalized: bool,
+        timestamp: u64,
     }
-
 
     struct OracleAuthority has key {
-        oracle_address: address,   // Authorized oracle address
+        oracle_address: address,
     }
 
-   
     public fun initialize_oracle(admin: &signer, oracle_address: address) {
         let oracle_auth = OracleAuthority {
             oracle_address,
@@ -41,11 +38,9 @@ module MyModule::SportsOracle {
         home_score: u64,
         away_score: u64
     ) acquires OracleAuthority {
-        
         let oracle_auth = borrow_global<OracleAuthority>(admin_address);
         assert!(signer::address_of(oracle) == oracle_auth.oracle_address, E_NOT_ORACLE);
 
-      
         let match_result = MatchResult {
             match_id,
             home_team,
@@ -56,7 +51,6 @@ module MyModule::SportsOracle {
             timestamp: timestamp::now_seconds(),
         };
 
-        
         move_to(oracle, match_result);
     }
 }
