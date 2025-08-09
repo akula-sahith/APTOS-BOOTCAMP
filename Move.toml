@@ -1,0 +1,15 @@
+[package]
+name = "SportsResultsOracle"
+version = "1.0.0"
+authors = []
+
+[addresses]
+MyModule = "0xd779b744b61077033b1c6dcbd1aa0627f1d728b3ecd4263d7c15167d18bc3127"
+[dev-addresses]
+
+[dependencies.AptosFramework]
+git = "https://github.com/aptos-labs/aptos-framework.git"
+rev = "mainnet"
+subdir = "aptos-framework"
+
+[dev-dependencies]
